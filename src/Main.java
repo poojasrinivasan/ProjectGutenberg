@@ -24,6 +24,17 @@ public class Main {
 			for(Object[] row : topLeastFrequentWords){
 				System.out.println(row[0] + " "+row[1]);
 			}
+			ChapterWiseAnalysis chObj = new ChapterWiseAnalysis();
+			int[] chapters = chObj.getFrequencyOfWord("Holmes");
+			System.out.println(Arrays.toString(chapters));
+			String quote = "Women are naturally secretive, and they like to do their own secreting.";
+			int chapterNumber = chObj.getChapterQuoteAppears(quote);
+			if(chapterNumber!=-1){
+				System.out.println("Chapter "+chapterNumber+" contains "+quote);
+			}
+			else{
+				System.out.println("Quote not found");
+			}
 			
 		}
 		catch(Exception e){
@@ -208,7 +219,7 @@ public class Main {
 		return ans;
 	}
 	
-	public Set getStopWords() throws Exception{
+	public Set<String> getStopWords() throws Exception{
 	File file = new File("stopWords/stopwords.txt");
 	HashSet<String> stopwords = new HashSet<>();
 	BufferedReader br = new BufferedReader(new FileReader(file));
@@ -221,6 +232,7 @@ public class Main {
 			}
 		}
 	}
+	br.close();
 	return stopwords;
 	}
 	
