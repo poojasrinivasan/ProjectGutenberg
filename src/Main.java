@@ -6,7 +6,7 @@ public class Main {
 		File file = new File("The-Adventures-of-Sherlock-Holmes/1661.txt");
 		Main obj = new Main();
 		try{
-			int totalWords = obj.getTotalNumberOfWords(file);
+		/*	int totalWords = obj.getTotalNumberOfWords(file);
 			System.out.println(totalWords);
 			int uniqueWords = obj.getTotalUniqueWords(file);
 			System.out.println(uniqueWords);
@@ -23,9 +23,9 @@ public class Main {
 			Object[][] topLeastFrequentWords = obj.get20LeastFrequentWords(file);
 			for(Object[] row : topLeastFrequentWords){
 				System.out.println(row[0] + " "+row[1]);
-			}
+			}*/
 			ChapterWiseAnalysis chObj = new ChapterWiseAnalysis();
-			int[] chapters = chObj.getFrequencyOfWord("Holmes");
+			/*int[] chapters = chObj.getFrequencyOfWord("Holmes");
 			System.out.println(Arrays.toString(chapters));
 			String quote = "Women are naturally secretive, and they like to do their own secreting.";
 			int chapterNumber = chObj.getChapterQuoteAppears(quote);
@@ -34,7 +34,11 @@ public class Main {
 			}
 			else{
 				System.out.println("Quote not found");
-			}
+			}*/
+			
+			
+			String generateSentence = chObj.generateSentence();
+			System.out.println(generateSentence);
 			
 		}
 		catch(Exception e){
@@ -235,6 +239,10 @@ public class Main {
 	br.close();
 	return stopwords;
 	}
+	
+	
+	
+	
 	
 	
 	

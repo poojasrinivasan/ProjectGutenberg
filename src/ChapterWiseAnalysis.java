@@ -1,9 +1,9 @@
 import java.io.*;
 import java.util.*;
 public class ChapterWiseAnalysis {
-	List<String> chapters;
+	List<List<String>> generatedSentences = new ArrayList<>();
     public int[] getFrequencyOfWord(String input) throws Exception {
-    	chapters = getChapterWiseText();
+    	List<String> chapters = getChapterWiseText();
     	int[] ans = new int[chapters.size()];
     	int index = 0;
     	for(String chapter : chapters){
@@ -42,7 +42,8 @@ public class ChapterWiseAnalysis {
         return fileData.toString();
     }
     
-    public int getChapterQuoteAppears(String quote){
+    public int getChapterQuoteAppears(String quote) throws Exception{
+    	List<String> chapters = getChapterWiseText();
     	for(int i = 0;i<chapters.size();i++){
     		String temp = chapters.get(i).replaceAll("[\\t\\n\\r]+"," ");
     		if(temp.contains(quote)){
@@ -52,5 +53,71 @@ public class ChapterWiseAnalysis {
     	}
     	return -1;
     }
+    
+    public String generateSentence() throws Exception{
+		HashMap<String,List<String>> adjList = new HashMap<>();
+		List<String> neighbors = nextWord("The");
+		adjList.put("The",neighbors);
+		createAdjacencyList(adjList, "The", 0);
+		System.out.println("Hellos");
+		//generateSentence(adjList,"The",new ArrayList<String>());
+		StringBuffer sb = new StringBuffer();
+		for(List<String> s : generatedSentences){
+			for(String token : s){
+				sb.append(token);
+				sb.append(" ");
+			}
+		break;	
+		}
+		return sb.toString();
+	}
+    
+    public List<String> generateSentence(HashMap<String,List<String>> adjList,String word,List<String> sentence) throws Exception{
+    if(sentence.size() > 20) return sentence;
+    sentence.add(word);
+    if(sentence.size()==20){
+    	generatedSentences.add(new ArrayList<>(sentence));
+    }
+    List<String> neighbors = adjList.get(word);
+    for(String neighbor : neighbors){
+    	generateSentence(adjList,neighbor,sentence);
+    }
+    sentence.remove(sentence.size()-1);
+    return sentence;
+    }
+    
+    public void createAdjacencyList(HashMap<String,List<String>> adjList,String word, int level) throws Exception{
+      System.out.println(level);
+      if(level >= 20) return ;
+	  List<String> neighbors = nextWord(word);
+	  adjList.put(word,neighbors);
+	  for(String neighbor : neighbors){
+	       createAdjacencyList(adjList, neighbor, level+1);
+	  }
+		
+    }
+    
+	
+	public List<String> nextWord(String word) throws Exception{
+		File file = new File("The-Adventures-of-Sherlock-Holmes/1661.txt");
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line;
+		boolean flag = false;
+		List<String> neighbors = new ArrayList<>();
+		while((line = br.readLine())!=null){
+			String[] tokens  = line.split(" ");
+			for(String token : tokens){
+				if(token.equals(word)){
+					flag = true;
+					continue;
+				}
+				if(flag){
+					neighbors.add(token);
+					flag = false;
+				}
+			}
+		}
+		return neighbors;
+	}
 }
 
