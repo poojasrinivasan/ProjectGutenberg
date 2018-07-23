@@ -6,26 +6,31 @@ public class Main {
 		File file = new File("The-Adventures-of-Sherlock-Holmes/1661.txt");
 		Main obj = new Main();
 		try{
-		/*	int totalWords = obj.getTotalNumberOfWords(file);
-			System.out.println(totalWords);
+			int totalWords = obj.getTotalNumberOfWords(file);
+			System.out.println("Total words in book " + totalWords);
+			System.out.println("=======");
 			int uniqueWords = obj.getTotalUniqueWords(file);
-			System.out.println(uniqueWords);
+			System.out.println("Total unique words in book " + uniqueWords);
+			System.out.println("=======");
 			Object[][] top20FrequentWords = obj.get20MostFrequentWords(file);
+			System.out.println("Top 20 Frequent words");
 			for(Object[] row : top20FrequentWords){
 				System.out.println(row[0] + " "+row[1]);
 			}
 			System.out.println("=======");
 			Object[][] top20InterestingFrequentWords = obj.get20MostInterestingFrequentWords(file);
+			System.out.println("Top 20 Interesting Frequent words");
 			for(Object[] row : top20InterestingFrequentWords){
 				System.out.println(row[0] + " "+row[1]);
 			}
 			System.out.println("=======");
 			Object[][] topLeastFrequentWords = obj.get20LeastFrequentWords(file);
+			System.out.println("Top 20 Least Frequent words");
 			for(Object[] row : topLeastFrequentWords){
 				System.out.println(row[0] + " "+row[1]);
-			}*/
+			}
 			ChapterWiseAnalysis chObj = new ChapterWiseAnalysis();
-			/*int[] chapters = chObj.getFrequencyOfWord("Holmes");
+			int[] chapters = chObj.getFrequencyOfWord("Holmes");
 			System.out.println(Arrays.toString(chapters));
 			String quote = "Women are naturally secretive, and they like to do their own secreting.";
 			int chapterNumber = chObj.getChapterQuoteAppears(quote);
@@ -34,7 +39,7 @@ public class Main {
 			}
 			else{
 				System.out.println("Quote not found");
-			}*/
+			}
 			
 			
 			String generateSentence = chObj.generateSentence();
@@ -47,7 +52,7 @@ public class Main {
 	}
 	
 	
-	
+	// returns total number of words in the text file
 	public int getTotalNumberOfWords(File file) throws Exception{
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;
@@ -60,6 +65,7 @@ public class Main {
 		return count;
 	}
 	
+	//returns total unique words in a file
 	public int getTotalUniqueWords(File file) throws Exception{
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;
@@ -78,7 +84,7 @@ public class Main {
 	}
 	
 	
-	
+	//returns top 20 frequent words with frequencies
 	public Object[][] get20MostFrequentWords(File file) throws Exception{
 		Object[][] ans = new Object[20][2];
 		HashMap<String,Integer> map = new HashMap<>();
@@ -126,6 +132,7 @@ public class Main {
 		return ans;
 	}
 	
+	//return top 20 most interesting frequent words
 	public Object[][] get20MostInterestingFrequentWords(File file) throws Exception{
 		Object[][] ans = new Object[20][2];
 		HashMap<String,Integer> map = new HashMap<>();
@@ -175,7 +182,7 @@ public class Main {
 	}
 	
 	
-	
+	//returns least 20 frequent words
 	public Object[][] get20LeastFrequentWords(File file) throws Exception{
 		Object[][] ans = new Object[20][2];
 		HashMap<String,Integer> map = new HashMap<>();
@@ -222,7 +229,7 @@ public class Main {
 		
 		return ans;
 	}
-	
+	//method to populate most commonly used words in a set
 	public Set<String> getStopWords() throws Exception{
 	File file = new File("stopWords/stopwords.txt");
 	HashSet<String> stopwords = new HashSet<>();

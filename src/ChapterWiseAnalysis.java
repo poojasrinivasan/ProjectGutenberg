@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 public class ChapterWiseAnalysis {
 	List<List<String>> generatedSentences = new ArrayList<>();
+	//method to return frequency of word chapter wise
     public int[] getFrequencyOfWord(String input) throws Exception {
     	List<String> chapters = getChapterWiseText();
     	int[] ans = new int[chapters.size()];
@@ -20,6 +21,7 @@ public class ChapterWiseAnalysis {
     	
     }
     
+    // splits text into chapters
     public List<String> getChapterWiseText() throws Exception{
     	String filePath = "The-Adventures-of-Sherlock-Holmes/1661.txt";
     	String book = readFileAsString(filePath);
@@ -28,6 +30,8 @@ public class ChapterWiseAnalysis {
     	 chapters.remove(0);
     	 return chapters;
     }
+    
+    //convert file to String
     public String readFileAsString(String filePath) throws IOException {
         StringBuffer fileData = new StringBuffer();
         BufferedReader reader = new BufferedReader(
@@ -42,6 +46,7 @@ public class ChapterWiseAnalysis {
         return fileData.toString();
     }
     
+    //return chapter number if a a given quote appears in it
     public int getChapterQuoteAppears(String quote) throws Exception{
     	List<String> chapters = getChapterWiseText();
     	for(int i = 0;i<chapters.size();i++){
@@ -54,13 +59,10 @@ public class ChapterWiseAnalysis {
     	return -1;
     }
     
+    //randomly generate a sentence on author's tone
     public String generateSentence() throws Exception{
-		HashMap<String,List<String>> adjList = new HashMap<>();
-		List<String> neighbors = nextWord("The");
-		adjList.put("The",neighbors);
-		createAdjacencyList(adjList, "The", 0);
-		System.out.println("Hellos");
-		//generateSentence(adjList,"The",new ArrayList<String>());
+		HashMap<String,Set<String>> adjList = new HashMap<>();
+		generateSentence(adjList,"The",new ArrayList<String>());
 		StringBuffer sb = new StringBuffer();
 		for(List<String> s : generatedSentences){
 			for(String token : s){
@@ -72,38 +74,34 @@ public class ChapterWiseAnalysis {
 		return sb.toString();
 	}
     
-    public List<String> generateSentence(HashMap<String,List<String>> adjList,String word,List<String> sentence) throws Exception{
-    if(sentence.size() > 20) return sentence;
+    public List<String> generateSentence(HashMap<String,Set<String>> adjList,String word,List<String> sentence) throws Exception{
+    if(sentence.size() > 20 || generatedSentences.size()>=1) return sentence;
     sentence.add(word);
     if(sentence.size()==20){
     	generatedSentences.add(new ArrayList<>(sentence));
     }
-    List<String> neighbors = adjList.get(word);
-    for(String neighbor : neighbors){
-    	generateSentence(adjList,neighbor,sentence);
-    }
+    Set<String> neighbors = nextWord(word);
+    adjList.put(word,neighbors);
+    
+   // choosing random element from Set
+    List<String> neighborList = new ArrayList<>(); 
+    neighborList.addAll(neighbors);
+    Double randomNumber = Math.random();
+    Integer size = neighborList.size();
+    Integer randomIndex = (int)(randomNumber * (size-1));
+	generateSentence(adjList,neighborList.get(randomIndex),sentence);
     sentence.remove(sentence.size()-1);
     return sentence;
     }
     
-    public void createAdjacencyList(HashMap<String,List<String>> adjList,String word, int level) throws Exception{
-      System.out.println(level);
-      if(level >= 20) return ;
-	  List<String> neighbors = nextWord(word);
-	  adjList.put(word,neighbors);
-	  for(String neighbor : neighbors){
-	       createAdjacencyList(adjList, neighbor, level+1);
-	  }
-		
-    }
-    
-	
-	public List<String> nextWord(String word) throws Exception{
+ 
+    // method to return the next word for the given word in the book	
+	public Set<String> nextWord(String word) throws Exception{
 		File file = new File("The-Adventures-of-Sherlock-Holmes/1661.txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;
 		boolean flag = false;
-		List<String> neighbors = new ArrayList<>();
+		Set<String> neighbors = new HashSet<>();
 		while((line = br.readLine())!=null){
 			String[] tokens  = line.split(" ");
 			for(String token : tokens){
@@ -117,6 +115,7 @@ public class ChapterWiseAnalysis {
 				}
 			}
 		}
+		br.close();
 		return neighbors;
 	}
 }
