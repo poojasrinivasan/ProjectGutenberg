@@ -30,7 +30,7 @@ public class Main {
 				System.out.println(row[0] + " "+row[1]);
 			}
 			ChapterWiseAnalysis chObj = new ChapterWiseAnalysis();
-			int[] chapters = chObj.getFrequencyOfWord("Holmes");
+			int[] chapters = chObj.getFrequencyOfWord("young");
 			System.out.println(Arrays.toString(chapters));
 			String quote = "Women are naturally secretive, and they like to do their own secreting.";
 			int chapterNumber = chObj.getChapterQuoteAppears(quote);
